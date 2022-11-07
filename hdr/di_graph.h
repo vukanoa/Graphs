@@ -22,11 +22,14 @@ struct Edge{
 // Graph functions
 struct di_Graph* create_di_graph(struct Edge* edges, int num_edges);
 
+
 // Graph Algorithms
 void DFS(struct di_Graph* di_graph, int node_data, int* visited);
+void BFS(struct di_Graph* di_graph, int node_data, int* visited);
 
 
 // Utility functions
 void print_di_graph(struct di_Graph* di_graph);
+void clear_visited (int* visited);
 
 #endif // _DI_GRAPH_H

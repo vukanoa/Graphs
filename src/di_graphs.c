@@ -26,7 +26,8 @@ create_di_graph(struct Edge* edges, int num_edges)
 }
 
 
-void DFS(struct di_Graph* di_graph, int node_data, int* visited)
+void
+DFS(struct di_Graph* di_graph, int node_data, int* visited)
 {
 	// Base case
 	if (di_graph == NULL)
@@ -42,6 +43,49 @@ void DFS(struct di_Graph* di_graph, int node_data, int* visited)
 			DFS(di_graph, n->data, visited);
 
 		n = n->next;
+	}
+}
+
+
+void
+BFS(struct di_Graph* di_graph, int node_data, int* visited)
+{
+	/* QUEUE */
+	int max_size = V * (V - 1);
+	// Every vertix points too all the other nodes -> V * (V - 1)
+	struct Node** queue = (struct Node**) malloc(max_size * sizeof(struct Node*));
+	int front = -1;
+	int rear  = 0;
+
+	visited[node_data] = 1;
+	printf("%d ", node_data);
+
+	struct Node* n = NULL;
+	while (front < rear)
+	{
+		if (n == NULL) // Only First iteration
+			n = di_graph->root[node_data];
+		else
+			n = di_graph->root[n->data];
+
+		// Push all adjacent nodes to the Queue
+		while (n != NULL)
+		{
+			queue[rear++] = n;
+			n = n->next;
+		}
+
+		n = queue[++front];
+
+		// Not NULL & already visited
+		while (n != NULL && visited[n->data] == 1)
+			n = queue[++front];
+
+		if (n != NULL)
+		{
+			visited[n->data] = 1;
+			printf("%d ", n->data);
+		}
 	}
 }
 
@@ -64,4 +108,12 @@ print_di_graph(struct di_Graph* di_graph)
 		}
 	}
 	printf("\n");
+}
+
+
+void
+clear_visited(int* visited)
+{
+	for (int i = 0; i < V; i++)
+		visited[i] = 0;
 }

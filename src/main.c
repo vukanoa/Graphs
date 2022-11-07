@@ -6,7 +6,7 @@ int main()
 	int num_edges = 8;
 	struct Edge edges[] =
 	{
-		{0, 1}, {0, 4}, {0, 5}, {1, 3}, {1, 4}, {2, 1}, {3, 2}, {3, 4}
+		{0, 5}, {0, 4}, {0, 1}, {1, 4}, {1, 3}, {2, 1}, {3, 4}, {3, 2}
 	};
 
 	int *visited = (int *) calloc(V, sizeof(int));
@@ -19,5 +19,10 @@ int main()
 	DFS(di_graph, 0, visited);
 	printf("\n\n");
 
+	clear_visited(visited);
+
+	printf("\n\tBFS:\n\t\t");
+	BFS(di_graph, 0, visited);
+	printf("\n\n");
 	return 0;
 }
