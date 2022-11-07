@@ -26,16 +26,35 @@ create_di_graph(struct Edge* edges, int num_edges)
 }
 
 
+void DFS(struct di_Graph* di_graph, int node_data, int* visited)
+{
+	// Base case
+	if (di_graph == NULL)
+		return;
+
+	visited[node_data] = 1;
+	printf("%d ", node_data);
+
+	struct Node* n = di_graph->root[node_data];
+	while (n != NULL)
+	{
+		if (visited[n->data] != 1)
+			DFS(di_graph, n->data, visited);
+
+		n = n->next;
+	}
+}
+
+
 void
 print_di_graph(struct di_Graph* di_graph)
 {
-	printf("\n");
 	for (int i = 0; i < V; i++)
 	{
 		struct Node* node = di_graph->root[i];
 		if (node != NULL)
 		{
-			printf("\t");
+			printf("\t\t");
 			while (node != NULL)
 			{
 				printf("(%d -> %d) ", i, node->data);
