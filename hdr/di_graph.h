@@ -32,4 +32,9 @@ void BFS(struct di_Graph* di_graph, int node_data, int* visited);
 void print_di_graph(struct di_Graph* di_graph);
 void clear_visited (int* visited);
 
+
+// Graph Problems
+int route_between_nodes_wrapper(struct di_Graph* di_graph, int src, int dest, int* visited);
+int route_between_nodes        (struct di_Graph* di_graph, int src, int dest, int* visited);
+
 #endif // _DI_GRAPH_H

@@ -24,5 +24,26 @@ int main()
 	printf("\n\tBFS:\n\t\t");
 	BFS(di_graph, 0, visited);
 	printf("\n\n");
+
+	clear_visited(visited);
+
+	/* Route Between Nodes */
+	int source_node = 3;
+	int destination_node = 0;
+	printf("\n\tSolution: ");
+	int sol = route_between_nodes_wrapper(di_graph, source_node, destination_node, visited);
+	if (sol)
+		printf("\n\t\tRoute between Nodes: %d & %d DOES exist!\n\n", source_node, destination_node);
+	else
+		printf("\n\t\tRoute between Nodes: %d & %d does NOT exist!\n\n", source_node, destination_node);
+
+	/*
+		In this directed graph, route between 3 & 0 does NOT exist.
+		However route from 0 to 3 DOES exist - therefore a route between these
+		2 nodes do exist.
+	*/
+
+
+
 	return 0;
 }
