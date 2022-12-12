@@ -21,6 +21,7 @@ struct Edge{
 
 // Graph functions
 struct di_Graph* create_di_graph(struct Edge* edges, int num_edges);
+int cyclic(struct di_Graph* di_graph, int V_in_graph);
 
 
 // Graph Algorithms
@@ -31,6 +32,8 @@ void BFS(struct di_Graph* di_graph, int node_data, int* visited);
 // Utility functions
 void print_di_graph(struct di_Graph* di_graph);
 void clear_visited (int* visited);
+int  cyclic_util   (struct di_Graph* di_Graph, int* visited, struct Node* curr);
+int  vertices      (struct Edge* edges, int num_edges);
 
 
 // Graph Problems

@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include "di_graph.h"
 
+
 int main()
 {
 	int num_edges = 8;
@@ -31,7 +32,7 @@ int main()
 	int source_node = 3;
 	int destination_node = 0;
 	printf("\n\tSolution: ");
-	int sol = route_between_nodes_wrapper(di_graph, source_node, destination_node, visited);
+	int sol = route_between_nodes(di_graph, source_node, destination_node, visited);
 	if (sol)
 		printf("\n\t\tRoute between Nodes: %d & %d DOES exist!\n\n", source_node, destination_node);
 	else
@@ -41,9 +42,17 @@ int main()
 		In this directed graph, route between 3 & 0 does NOT exist.
 		However route from 0 to 3 DOES exist - therefore a route between these
 		2 nodes do exist.
+
+		But since this is DG(Not DAG currently), we will say that route
+		from 3 to 0 does NOT exist.
 	*/
 
+	printf("\n\tNumber of Vertices: %d\n", vertices(edges, num_edges));
 
+	if (cyclic(di_graph, vertices(edges, num_edges)))
+		printf("\n\tThis graph does INDEED contain a cycle! It's not DAG!\n\n");
+	else
+		printf("\n\tThis graph does NOT contain a cycle! It is DAG!\n\n");
 
 	return 0;
 }

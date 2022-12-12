@@ -26,6 +26,30 @@ create_di_graph(struct Edge* edges, int num_edges)
 }
 
 
+int
+cyclic(struct di_Graph* di_graph, int V_in_graph)
+{
+	int *visited = (int *) calloc(V_in_graph, sizeof(int));
+
+	for (int i = 0; i < V_in_graph; i++)
+	{
+		visited[i] = 1;
+		struct Node* tmp = di_graph->root[i];
+
+		while (tmp != NULL)
+		{
+			if (cyclic_util(di_graph, visited, tmp))
+				return 1;
+
+			tmp = tmp->next;
+		}
+		visited[i] = 0;
+	}
+
+	return 0;
+}
+
+
 void
 DFS(struct di_Graph* di_graph, int node_data, int* visited)
 {
@@ -42,8 +66,7 @@ DFS(struct di_Graph* di_graph, int node_data, int* visited)
 		if (visited[n->data] != 1)
 			DFS(di_graph, n->data, visited);
 
-		n = n->next;
-	}
+		n = n->next; }
 }
 
 
@@ -119,7 +142,53 @@ clear_visited(int* visited)
 }
 
 
-int 
+int
+cyclic_util(struct di_Graph* di_graph, int* visited, struct Node* curr)
+{
+	if (visited[curr->data] == 1)
+		return 1;
+
+	visited[curr->data] = 1;
+	struct Node* tmp = di_graph->root[curr->data];
+
+	while (tmp != NULL)
+	{
+		if (cyclic_util(di_graph, visited, tmp))
+			return 1;
+
+		tmp = tmp->next;
+	}
+
+	return 0;
+}
+
+
+int
+vertices(struct Edge* edges, int num_edges)
+{
+	int *exist = (int *) calloc(V, sizeof(int));
+	int num_of_vertices = 0;
+
+	for (int i = 0; i < num_edges; i++)
+	{
+		if (!exist[edges[i].source])
+		{
+			num_of_vertices++;
+			exist[edges[i].source] = 1;
+		}
+
+		if (!exist[edges[i].destination])
+		{
+			num_of_vertices++;
+			exist[edges[i].destination] = 1;
+		}
+	}
+
+	return num_of_vertices;
+}
+
+
+int
 route_between_nodes_wrapper(struct di_Graph* di_graph, int src, int dest, int* visited)
 {
 	int left  = route_between_nodes(di_graph, src, dest, visited);
@@ -178,3 +247,4 @@ route_between_nodes(struct di_Graph* di_graph, int src, int dest, int* visited)
 
 	return 0; // Route between nodes "source" and "destination" does NOT exist
 }
+
