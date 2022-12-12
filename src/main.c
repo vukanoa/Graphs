@@ -4,11 +4,19 @@
 
 int main()
 {
+	/* No cycle => Topological Sort exists */
 	int num_edges = 8;
 	struct Edge edges[] =
 	{
-		{0, 5}, {0, 4}, {0, 1}, {1, 4}, {1, 3}, {2, 1}, {3, 4}, {3, 2}
+		{0, 5}, {0, 4}, {0, 1}, {1, 3}, {1, 4}, {3, 4}, {3, 2}, {5, 3}
 	};
+
+	/* Cycle => No Topological Sort */
+	// int num_edges = 9;
+	// struct Edge edges[] =
+	// {
+	// 	{0, 5}, {0, 4}, {0, 1}, {1, 3}, {1, 4}, {2, 1}, {3, 4}, {3, 2}, {5, 3}
+	// };
 
 	int *visited = (int *) calloc(V, sizeof(int));
 
@@ -49,10 +57,21 @@ int main()
 
 	printf("\n\tNumber of Vertices: %d\n", vertices(edges, num_edges));
 
-	if (cyclic(di_graph, vertices(edges, num_edges)))
-		printf("\n\tThis graph does INDEED contain a cycle! It's not DAG!\n\n");
+	int num_of_vertices = vertices(edges, num_edges);
+	if (cyclic(di_graph, num_of_vertices))
+		printf("\n\tThis graph does INDEED contain a cycle! It's not a DAG!\n\n");
 	else
-		printf("\n\tThis graph does NOT contain a cycle! It is DAG!\n\n");
+		printf("\n\tThis graph does NOT contain a cycle! It is a DAG!\n\n");
+
+
+	int* ordering = (int *) malloc(sizeof(int));
+	ordering = Topological_sort(di_graph, num_of_vertices);
+
+	printf("\n\tTopological Sort:\n\t\t");
+	for (int i = 0; i < num_of_vertices; i++)
+		printf("%d ", ordering[i]);
+
+	printf("\n\n");
 
 	return 0;
 }

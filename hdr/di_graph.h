@@ -28,6 +28,9 @@ int cyclic(struct di_Graph* di_graph, int V_in_graph);
 void DFS(struct di_Graph* di_graph, int node_data, int* visited);
 void BFS(struct di_Graph* di_graph, int node_data, int* visited);
 
+int* Topological_sort(struct di_Graph* di_graph, int V_in_graph);
+void DFS_Topological(struct di_Graph* di_graph, int node_data, int* visited, int* stack, int* top);
+
 
 // Utility functions
 void print_di_graph(struct di_Graph* di_graph);

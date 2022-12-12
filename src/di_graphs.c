@@ -66,7 +66,8 @@ DFS(struct di_Graph* di_graph, int node_data, int* visited)
 		if (visited[n->data] != 1)
 			DFS(di_graph, n->data, visited);
 
-		n = n->next; }
+		n = n->next;
+	}
 }
 
 
@@ -110,6 +111,71 @@ BFS(struct di_Graph* di_graph, int node_data, int* visited)
 			printf("%d ", n->data);
 		}
 	}
+}
+
+
+int*
+Topological_sort(struct di_Graph* di_graph, int V_in_graph)
+{
+	// Base case
+	if (di_graph == NULL)
+	{
+		printf("\n\tError: Graph is Empty!\n\n");
+		exit(-1);
+	}
+
+	if (cyclic(di_graph, V_in_graph))
+	{
+		printf("\n\tError: This graph containes CYCLES. It's not a DAG => Topological Sort doesn't exist!\n\n");
+		exit(-1);
+	}
+
+	int top = -1;
+	int* stack   = (int *) calloc(V_in_graph, sizeof(int));
+	int* visited = (int *) calloc(V_in_graph, sizeof(int));
+
+	int* ordering = (int *) malloc(sizeof(int));
+
+	for (int i = 0; i < V_in_graph; i++)
+	{
+		struct Node* tmp = di_graph->root[i];
+
+		while (tmp != NULL)
+		{
+			if (!visited[tmp->data])
+				DFS_Topological(di_graph, tmp->data, visited, stack, &top);
+
+			tmp = tmp->next;
+		}
+	}
+
+	int x = 0;
+	ordering[x++] = 0; // Put "root" as first
+	while (top >= 0)
+	{
+		ordering[x++] = stack[top];
+		top--;
+	}
+
+	return ordering;
+}
+
+
+void
+DFS_Topological(struct di_Graph* di_graph, int node_data, int* visited, int* stack, int* top)
+{
+	visited[node_data] = 1;
+
+	struct Node* n = di_graph->root[node_data];
+	while (n != NULL)
+	{
+		if (visited[n->data] != 1)
+			DFS_Topological(di_graph, n->data, visited, stack, top);
+
+		n = n->next;
+	}
+
+	stack[++(*top)] = node_data;
 }
 
 
@@ -159,6 +225,7 @@ cyclic_util(struct di_Graph* di_graph, int* visited, struct Node* curr)
 		tmp = tmp->next;
 	}
 
+	visited[curr->data] = 0;
 	return 0;
 }
 
@@ -247,4 +314,3 @@ route_between_nodes(struct di_Graph* di_graph, int src, int dest, int* visited)
 
 	return 0; // Route between nodes "source" and "destination" does NOT exist
 }
-
