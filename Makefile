@@ -1,5 +1,5 @@
 CC	:= gcc
-CFLAGS	:= -O0 -g -Wall
+CFLAGS	:= -O0 -g -Wall -fsanitize=address
 TARGET	:= program
 BUILD	:= build
 SRCDIR	:= src
