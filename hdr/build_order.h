@@ -24,12 +24,12 @@ struct BO_Edge{
 // Build Order Graph functions
 struct BO_Graph* create_bo_graph(struct BO_Edge*  edges, int num_edges);
 
-// char* build_order      (struct BO_Graph* bo_graph, int used_vertices);
+char* build_order      (struct BO_Graph* bo_graph, int used_vertices);
 void  deallocate       (struct BO_Graph* bo_graph);
-// int   add_non_dependent(struct BO_Graph* bo_graph, char* ordering, int offset, int vertices);
+int   add_non_dependent(struct BO_Graph* bo_graph, char* projects, int offset, int projects_size, char* order);
 
 // Utility functions
 void print_bo_graph(struct BO_Graph* bo_graph);
-int  project_number(struct BO_Edge*  edges, int num_edges);
+int  projects_number(struct BO_Edge*  edges, int num_edges);
 
 #endif // _BUILD_ORDER_H_

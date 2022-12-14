@@ -23,50 +23,73 @@ create_bo_graph(struct BO_Edge* edges, int num_edges)
 		// Put in Graph's Adjacent List for the source index
 		node->next = bo_graph->root[source - LOWERCASE_A];
 		bo_graph->root[source - LOWERCASE_A] = node;
-		bo_graph->dependencies[source - LOWERCASE_A]++;
+		bo_graph->dependencies[destination - LOWERCASE_A]++;
 	}
 
 	return bo_graph;
 }
 
 
-// char*
-// build_order(struct BO_Graph* bo_graph, int used_vertices)
-// {
-// 	char* ordering = (char*) calloc(used_vertices, sizeof(char*));
-//
-// 	/* Add "roots" to the build order first */
-// 	int end_of_list = add_non_dependent(bo_graph, ordering, 0, used_vertices);
-//
-// 	int to_be_processed = 0;
-// 	while (to_be_processed < used_vertices)
-// 	{
-//
-// 	}
-// }
-//
-//
-// int
-// add_non_dependent(struct BO_Graph* bo_graph, char* ordering, int offset, int vertices)
-// {
-// 	/*
-// 		Vertices are all in lexicographical order
-//
-// 		If there are 5 vertices:
-// 			It MUST  be: a, b, c, d, e
-// 			It can't be: a, d, e, f, g
-// 	*/
-// 	for (int i = 0; i < vertices; i++)
-// 	{
-// 		if (bo_graph->dependencies[i] == 0)
-// 		{
-// 			ordering[i] = i + LOWERCASE_A;
-// 			offset++;
-// 		}
-// 	}
-//
-// 	return offset;
-// }
+char*
+build_order(struct BO_Graph* bo_graph, int used_vertices)
+{
+	char* order = (char*) calloc(used_vertices, sizeof(char));
+	char projects[used_vertices];
+
+	for (int i = 0; i < used_vertices; i++)
+		projects[i] = i + LOWERCASE_A;
+
+	/* add "roots" to the build order first */
+	int end_of_list = add_non_dependent(bo_graph, projects, 0, used_vertices, order);
+
+	int to_be_processed = 0;
+	while (to_be_processed < used_vertices)
+	{
+		char current = order[to_be_processed];
+
+		/*
+			We have a circular dependency since there are no remaining projects
+			with zero dependencies
+		*/
+		if (current == 0)
+			return NULL;
+
+		char children[MAX_VERTICES];
+
+		/* Remove myself from a dependency */
+		struct BO_Node* child = bo_graph->root[current - LOWERCASE_A];
+		int i = 0;
+
+		while (child != NULL)
+		{
+			bo_graph->dependencies[child->letter - LOWERCASE_A]--;
+			children[i++] = child->letter;
+
+			child = child->next;
+		}
+
+		end_of_list = add_non_dependent(bo_graph, children, end_of_list, i, order);
+		to_be_processed++;
+	}
+
+	return order;
+}
+
+
+int
+add_non_dependent(struct BO_Graph* bo_graph, char* projects, int offset, int projects_size, char* order)
+{
+	for (int i = 0; i < projects_size; i++)
+	{
+		if (bo_graph->dependencies[projects[i] - LOWERCASE_A] == 0)
+		{
+			order[offset] = projects[i];
+			offset++;
+		}
+	}
+
+	return offset;
+}
 
 
 void
@@ -112,7 +135,7 @@ print_bo_graph(struct BO_Graph* bo_graph)
 
 
 int
-project_number(struct BO_Edge* edges, int num_edges)
+projects_number(struct BO_Edge* edges, int num_edges)
 {
 	int *exist = (int *) calloc(MAX_VERTICES, sizeof(int));
 	int num_of_vertices = 0;
@@ -131,6 +154,7 @@ project_number(struct BO_Edge* edges, int num_edges)
 			exist[edges[i].destination - LOWERCASE_A] = 1;
 		}
 	}
+	free(exist);
 
 	return num_of_vertices;
 }
