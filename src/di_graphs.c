@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include "di_graph.h"
 
+/* Directed Graph Functions */
 struct di_Graph*
 create_di_graph(struct Edge* edges, int num_edges)
 {
@@ -50,6 +51,7 @@ cyclic(struct di_Graph* di_graph, int V_in_graph)
 }
 
 
+/* Directed Graph Algorithms */
 void
 DFS(struct di_Graph* di_graph, int node_data, int* visited)
 {
@@ -179,6 +181,7 @@ DFS_Topological(struct di_Graph* di_graph, int node_data, int* visited, int* sta
 }
 
 
+/* Utility Functions */
 void
 print_di_graph(struct di_Graph* di_graph)
 {
@@ -226,6 +229,7 @@ cyclic_util(struct di_Graph* di_graph, int* visited, struct Node* curr)
 	}
 
 	visited[curr->data] = 0;
+
 	return 0;
 }
 
@@ -255,6 +259,7 @@ vertices(struct Edge* edges, int num_edges)
 }
 
 
+/* Directed Graph Problems */
 int
 route_between_nodes_wrapper(struct di_Graph* di_graph, int src, int dest, int* visited)
 {

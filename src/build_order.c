@@ -3,6 +3,7 @@
 
 #define LOWERCASE_A 97
 
+/* Build Order Graph Functions */
 struct BO_Graph*
 create_bo_graph(struct BO_Edge* edges, int num_edges)
 {
@@ -113,6 +114,7 @@ deallocate(struct BO_Graph* bo_graph)
 }
 
 
+/* Utility Functions */
 void
 print_bo_graph(struct BO_Graph* bo_graph)
 {

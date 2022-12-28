@@ -1,13 +1,13 @@
-CC	:= gcc
-CFLAGS	:= -O0 -g -Wall -fsanitize=address
-TARGET	:= program
-BUILD	:= build
-SRCDIR	:= src
-HDRDIR	:= hdr
-HDRS	:= -I$(HDRDIR)
-SRCS	:= $(wildcard $(SRCDIR)/*.c)
-OBJS	:= $(patsubst $(SRCDIR)/%.c,$(BUILD)/%.o,$(SRCS))
-DEPS	:= $(patsubst $(SRCDIR)/%.c,$(BUILD)/%.d,$(SRCS))
+CC      := gcc
+CFLAGS  := -O0 -g -Wall -fsanitize=address
+TARGET  := program
+BUILD   := build
+SRCDIR  := src
+HDRDIR  := hdr
+HDRS    := -I$(HDRDIR)
+SRCS    := $(wildcard $(SRCDIR)/*.c)
+OBJS    := $(patsubst $(SRCDIR)/%.c,$(BUILD)/%.o,$(SRCS))
+DEPS    := $(patsubst $(SRCDIR)/%.c,$(BUILD)/%.d,$(SRCS))
 
 .PHONY = all
 
